@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /root/main/src
+CMAKE_SOURCE_DIR = /root/action/src
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /root/main/build
+CMAKE_BINARY_DIR = /root/action/build
 
 # Utility rule file for download_extra_data.
 
@@ -67,6 +67,6 @@ CMakeFiles/download_extra_data.dir/clean:
 .PHONY : CMakeFiles/download_extra_data.dir/clean
 
 CMakeFiles/download_extra_data.dir/depend:
-	cd /root/main/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /root/main/src /root/main/src /root/main/build /root/main/build /root/main/build/CMakeFiles/download_extra_data.dir/DependInfo.cmake --color=$(COLOR)
+	cd /root/action/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /root/action/src /root/action/src /root/action/build /root/action/build /root/action/build/CMakeFiles/download_extra_data.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/download_extra_data.dir/depend
 
