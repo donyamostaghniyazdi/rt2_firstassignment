@@ -8,13 +8,12 @@ project(rt2_assignment1)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
+geometry_msgs
   roscpp
   rospy
   std_msgs
-  nav_msgs
   actionlib
   actionlib_msgs
-  geometry_msgs
   message_generation
 )
 
@@ -62,14 +61,13 @@ find_package(catkin REQUIRED COMPONENTS
  add_service_files(
    FILES
    Command.srv
-   Position.srv
    RandomPosition.srv
  )
 
 ## Generate actions in the 'action' folder
  add_action_files(
    FILES
-   Goalpoint.action
+   Gotopoint.action
   )
 
 
@@ -78,7 +76,6 @@ find_package(catkin REQUIRED COMPONENTS
  DEPENDENCIES
  actionlib_msgs
  geometry_msgs
- nav_msgs
  )
 
 ################################################
@@ -174,7 +171,7 @@ include_directories(
 ## Mark executable scripts (Python etc.) for installation
 ## in contrast to setup.py, you can choose the destination
  catkin_install_python(PROGRAMS
-   scripts/go_to_point.py scripts/user_interface.py
+   scripts/go_to_point.py
    DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
  )
 

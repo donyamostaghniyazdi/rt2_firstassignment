@@ -7,7 +7,8 @@ from tf import transformations
 import math
 import actionlib
 import actionlib.msg
-import rt2_assignment1.msg
+import rt2_assgnment1.msg
+from std_msgs.msg import String, Float64
 
 # robot state variables
 position_ = Point()
@@ -20,6 +21,7 @@ pub_ = None
 desired_position_= Point()
 desired_position_.z=0
 success = False
+Vel=Twist()
 yaw_precision_ = math.pi / 9  # +/- 20 degree allowed
 yaw_precision_2_ = math.pi / 90  # +/- 2 degree allowed
 dist_precision_ = 0.1
@@ -31,7 +33,12 @@ ub_d = 0.6
 
 #action server
 act_s=None
-# Called when a new data is called
+
+def clbk_vel(msg):
+    global Vel
+    Vel.linear.x=msg.linear.x
+    Vel.angular.z=msg.angular.z
+
 def clbk_odom(msg):
     global position_
     global pose_
@@ -47,40 +54,39 @@ def clbk_odom(msg):
     euler = transformations.euler_from_quaternion(quaternion)
     yaw_ = euler[2]
 
-#It changes to the new state
+
 def change_state(state):
     global state_
     state_ = state
     print ('State changed to [%s]' % state_)
 
-#This is used to calculate angles
+
 def normalize_angle(angle):
     if(math.fabs(angle) > math.pi):
         angle = angle - (2 * math.pi * angle) / (math.fabs(angle))
     return angle
 
-#This is used to orient the robot in the direction of goal
 def fix_yaw(des_pos):
-    global yaw_, pub, yaw_precision_2_, state_
+    global yaw_, pub, yaw_precision_2_, state_,Vel
     des_yaw = math.atan2(desired_position_.y - position_.y, desired_position_.x - position_.x)
     err_yaw = normalize_angle(des_yaw - yaw_)
     rospy.loginfo(err_yaw)
     
     twist_msg = Twist()
     if math.fabs(err_yaw) > yaw_precision_2_:
-        twist_msg.angular.z = kp_a*err_yaw
+        twist_msg.angular.z = Vel.angular.z
         if twist_msg.angular.z > ub_a:
-            twist_msg.angular.z = ub_a
+            twist_msg.angular.z = Vel.angular.z
         elif twist_msg.angular.z < lb_a:
-            twist_msg.angular.z = lb_a
+            twist_msg.angular.z = Vel.angular.z
     pub_.publish(twist_msg)
     if math.fabs(err_yaw) <= yaw_precision_2_:
         print ('Yaw error: [%s]' % err_yaw)
         change_state(1)
 
-# Makes the robot to go in the straight line
+
 def go_straight_ahead(des_pos):
-    global yaw_, pub, yaw_precision_, state_
+    global yaw_, pub, yaw_precision_, state_,Vel
     des_yaw = math.atan2(desired_position_.y - position_.y, desired_position_.x - position_.x)
     err_yaw = des_yaw - yaw_
     err_pos = math.sqrt(pow(desired_position_.y - position_.y, 2) + pow(desired_position_.x - position_.x, 2))
@@ -89,11 +95,10 @@ def go_straight_ahead(des_pos):
 
     if err_pos > dist_precision_:
         twist_msg = Twist()
-        twist_msg.linear.x = 0.3
+        twist_msg.linear.x = Vel.linear.x
         if twist_msg.linear.x > ub_d:
-            twist_msg.linear.x = ub_d
-
-        twist_msg.angular.z = kp_a*err_yaw
+            twist_msg.linear.x = Vel.linear.x
+        twist_msg.angular.z = Vel.linear.z*err_yaw
         pub_.publish(twist_msg)
     else: 
         print ('Position error: [%s]' % err_pos)
@@ -103,25 +108,22 @@ def go_straight_ahead(des_pos):
         print ('Yaw error: [%s]' % err_yaw)
         change_state(0)
 
-
-# This orients the robot in final desired position
 def fix_final_yaw(des_yaw):
+    global Vel
     err_yaw = normalize_angle(des_yaw - yaw_)
     rospy.loginfo(err_yaw)
     twist_msg = Twist()
     if math.fabs(err_yaw) > yaw_precision_2_:
-        twist_msg.angular.z = kp_a*err_yaw
+        twist_msg.angular.z = Vel.angular.z
         if twist_msg.angular.z > ub_a:
-            twist_msg.angular.z = ub_a
+            twist_msg.angular.z = Vel.angular.z
         elif twist_msg.angular.z < lb_a:
-            twist_msg.angular.z = lb_a
+            twist_msg.angular.z = Vel.angular.z
     pub_.publish(twist_msg)
     if math.fabs(err_yaw) <= yaw_precision_2_:
         #print ('Yaw error: [%s]' % err_yaw)
         change_state(3)
-
- # Keeping the velocoties to 0 before setting the goal to be completed
-
+        
 def done():
     twist_msg = Twist()
     twist_msg.linear.x = 0
@@ -129,8 +131,7 @@ def done():
     pub_.publish(twist_msg)
     success = True
     act_s.set_succeeded()
-
-# Implements the logic to go to the goal   
+    
 def go_to_point(goal):
     global state_, desired_position_, act_s, success
     desired_position_.x = goal.target_pose.pose.position.x
@@ -161,14 +162,11 @@ def go_to_point(goal):
 
 def main():
     global pub_, active_, act_s
-    # Initialize the goal
     rospy.init_node('go_to_point')
-    # Initialize the publisher for the velocity
     pub_ = rospy.Publisher('/cmd_vel', Twist, queue_size=1)
-    # Initialize the subscriber for odometry
     sub_odom = rospy.Subscriber('/odom', Odometry, clbk_odom)
-    # Initialise the actiojn server
-    act_s = actionlib.SimpleActionServer('/Goalpoint', rt2_assignment1.msg.GoalpointAction, go_to_point, auto_start=False)
+    sub_linVel = rospy.Subscriber('/vel', Twist, clbk_vel)
+    act_s = actionlib.SimpleActionServer('/go_to_point', rt2_assignment1.msg.GotopointAction, go_to_point, auto_start=False)
     act_s.start()
     rospy.spin()
 

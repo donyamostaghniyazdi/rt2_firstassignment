@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /root/action/src
+CMAKE_SOURCE_DIR = /root/jupyter/src
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /root/action/build
+CMAKE_BINARY_DIR = /root/jupyter/build
 
 # Utility rule file for download_extra_data.
 
@@ -67,6 +67,6 @@ CMakeFiles/download_extra_data.dir/clean:
 .PHONY : CMakeFiles/download_extra_data.dir/clean
 
 CMakeFiles/download_extra_data.dir/depend:
-	cd /root/action/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /root/action/src /root/action/src /root/action/build /root/action/build /root/action/build/CMakeFiles/download_extra_data.dir/DependInfo.cmake --color=$(COLOR)
+	cd /root/jupyter/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /root/jupyter/src /root/jupyter/src /root/jupyter/build /root/jupyter/build /root/jupyter/build/CMakeFiles/download_extra_data.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/download_extra_data.dir/depend
 

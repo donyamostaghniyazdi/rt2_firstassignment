@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /root/action/src
+CMAKE_SOURCE_DIR = /root/jupyter/src
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /root/action/build
+CMAKE_BINARY_DIR = /root/jupyter/build
 
 # Utility rule file for run_tests.
 
@@ -67,6 +67,6 @@ CMakeFiles/run_tests.dir/clean:
 .PHONY : CMakeFiles/run_tests.dir/clean
 
 CMakeFiles/run_tests.dir/depend:
-	cd /root/action/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /root/action/src /root/action/src /root/action/build /root/action/build /root/action/build/CMakeFiles/run_tests.dir/DependInfo.cmake --color=$(COLOR)
+	cd /root/jupyter/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /root/jupyter/src /root/jupyter/src /root/jupyter/build /root/jupyter/build /root/jupyter/build/CMakeFiles/run_tests.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/run_tests.dir/depend
 
