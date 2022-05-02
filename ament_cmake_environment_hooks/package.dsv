@@ -1,0 +1,4 @@
+source;share/rt2_assignment1_ros2/local_setup.bash
+source;share/rt2_assignment1_ros2/local_setup.dsv
+source;share/rt2_assignment1_ros2/local_setup.sh
+source;share/rt2_assignment1_ros2/local_setup.zsh
