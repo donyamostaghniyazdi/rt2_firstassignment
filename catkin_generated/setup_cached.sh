@@ -7,7 +7,5 @@
 # new environment variables
 
 # modified environment variables
-export CMAKE_PREFIX_PATH="/root/main/devel:$CMAKE_PREFIX_PATH"
-export PWD='/root/main/build'
-export ROSLISP_PACKAGE_DIRECTORIES='/root/main/devel/share/common-lisp'
-export ROS_PACKAGE_PATH="/root/main/src:$ROS_PACKAGE_PATH"
+export LD_LIBRARY_PATH='/root/jupyter/devel/lib:/root/action/devel/lib:/root/main/devel/lib:/opt/ros/noetic/lib:/opt/ros/noetic/lib/x86_64-linux-gnu'
+export PWD='/root/ros1/build'
