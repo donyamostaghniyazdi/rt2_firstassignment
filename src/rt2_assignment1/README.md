@@ -1,5 +1,5 @@
 ## Assignment of the Research Track 2 course 
- ELHAM MOHAMMADI (matricola 5073904)
+ donya mostaghniyazdi 
 
 # About the assignment
 The robot starts from the origin with out any orientation or velocity. When the user is requestes the Goalpoint requests the (x,y,theta)  to position server and position server returns the values. Action server is used to pause the simullation.
@@ -54,7 +54,7 @@ catkin_make
 clone the repository 
 
 ```
-git clone -b action https://github.com/elh4m/rt2_assignment1.git
+git clone -b action https://github.com/studentdonya/rt2_firstassignment
 ```
 
 Refresh the workspace using
